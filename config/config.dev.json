@@ -2,5 +2,5 @@
   "Port" : "3000",
   "DB_User" : "cody",
   "DB_Password" : "password",
-  "DB_Name" : "fixmoto_dev"
+  "DB_Name" : "carbon_dev"
 }
