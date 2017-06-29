@@ -2,7 +2,8 @@ package main
 
 import (
 	"net/http"
-	
+
+	"github.com/codeaustin/carbon/models"
 	"github.com/codeaustin/carbon/utils/config"
 	"github.com/codeaustin/carbon/utils/db"
 	"github.com/labstack/echo"
@@ -10,13 +11,21 @@ import (
 )
 
 func main() {
+	// Init the config instance
 	config.Load("/Users/cody/goworkspace/src/github.com/codeaustin/carbon/config")
+
+	// Ensure DB and tables created
+	tables := []db.TableInfo{models.CreateCategoryTable()}
+
 	db.Init()
+	db.CreateTables(tables)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Hello World!",
+		})
 	})
 
 	PORT := ":" + config.Config.Port

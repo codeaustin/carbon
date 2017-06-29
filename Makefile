@@ -5,7 +5,7 @@ run:
 	go run app.go
 
 build: 
-	go build app.go -o carbon
+	go build 
 
 clean:
 	rm carbon
