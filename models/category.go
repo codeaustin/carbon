@@ -17,9 +17,9 @@ type Category struct {
 //CreateCategoryTable returns the table information to create table in DB
 func CreateCategoryTable() db.TableInfo {
 	categoryTableInfo := db.TableInfo{
-		Name: "category",
+		Name: "categories",
 		CreationSQL: `
-			CREATE TABLE category (
+			CREATE TABLE categories (
 				id SERIAL PRIMARY KEY,
 				name VARCHAR NOT NULL,
 				created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),

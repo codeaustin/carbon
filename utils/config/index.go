@@ -7,10 +7,12 @@ import (
 )
 
 var Config struct {
-	Port        string
-	DB_User     string
-	DB_Password string
-	DB_Name     string
+	Port       string `json:"port"`
+	DBUser     string `json:"dbUser"`
+	DBPassword string `json:"dbPassword"`
+	DBName     string `json:"dbName"`
+	DBPort     string `json:"dbPort"`
+	DBHost     string `json:"dbHost"`
 }
 
 func Init() {
