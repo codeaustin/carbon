@@ -32,6 +32,13 @@ func Init() {
 		log.Fatal(err)
 	}
 
+	// Ensuring connection to DB
+	err = DB.Ping()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println("🚀  DB Connected")
 }
 

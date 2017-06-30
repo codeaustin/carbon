@@ -1,39 +1,43 @@
 package config
 
 import (
-	"os"
 	"encoding/json"
 	"log"
+	"os"
 )
 
-
 var Config struct {
-	Port string
-	DB_User string
+	Port        string
+	DB_User     string
 	DB_Password string
-	DB_Name string
+	DB_Name     string
 }
 
-
-func Load(configPath string) {
+func Init() {
 	env := os.Getenv("ENV")
+
+	configDir, _ := os.Getwd()
+	configDir += "/config/"
 
 	var configFile string
 	if env == "PROD" {
-		configFile = configPath + "/config.prod.json"
+		configFile = configDir + "/config.prod.json"
 	} else if env == "TEST" {
-		configFile = configPath + "/config.test.json"
+		configFile = configDir + "/config.test.json"
 	} else {
-		configFile = configPath + "/config.dev.json"
+		configFile = configDir + "/config.dev.json"
 	}
 
-	file, err := os.Open(configFile); if err != nil { log.Fatal(err) }
+	file, err := os.Open(configFile)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	decoder := json.NewDecoder(file)
 
 	err = decoder.Decode(&Config)
-	
-	if err != nil { 
+
+	if err != nil {
 		log.Fatal("There was a problem parsing the config json")
 	}
 }
