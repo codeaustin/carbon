@@ -12,7 +12,7 @@ import (
 
 func main() {
 	// Init the config instance
-	config.Load("/Users/cody/goworkspace/src/github.com/codeaustin/carbon/config")
+	config.Init()
 
 	// Ensure DB and tables created
 	tables := []db.TableInfo{models.CreateCategoryTable()}
