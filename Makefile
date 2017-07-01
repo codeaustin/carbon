@@ -1,6 +1,3 @@
-install:
-	docker-compose build
-
 run:
 	docker-compose up
 
@@ -10,10 +7,9 @@ stop:
 down:
 	docker-compose down
 
-build: 
-	go build 
+build:
+	docker-compose build 
 
 clean:
 	rm carbon
 	docker-compose down
-

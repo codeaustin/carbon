@@ -21,6 +21,21 @@ func getEvents(c echo.Context) error {
 	})
 }
 
+func getEvent(c echo.Context) error {
+	id := c.Param("id")
+	event, tx := models.GetEvent(id)
+
+	if !tx.Ok {
+		return c.JSON(tx.Status, map[string]interface{}{
+			"mesage": tx.Message,
+		})
+	}
+
+	return c.JSON(tx.Status, map[string]interface{}{
+		"event": event,
+	})
+}
+
 func createEvent(c echo.Context) error {
 	var event models.Event
 
