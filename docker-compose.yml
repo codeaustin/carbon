@@ -1,0 +1,27 @@
+version: "3"
+services:
+    postgres:
+        image: postgres:latest
+        ports:
+            - "5432"
+        environment:
+            - POSTGRES_USER=ang
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=carbon_dev
+        volumes:
+            - ~/data:/data
+    go:
+        build: .
+        depends_on:
+            - "postgres"
+        environment:
+            - GOPATH=/goworkspace
+        working_dir: /goworkspace/src/github.com/codeaustin/carbon
+        command: go run app.go
+        volumes:
+            - ../..:/goworkspace/src/github.com
+        links:
+            - postgres
+        ports:
+            - "3000:3000"
+
