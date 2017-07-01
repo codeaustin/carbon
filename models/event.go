@@ -41,6 +41,19 @@ func GetEvents() ([]*Event, Tx) {
 	return events, Tx{"", true, http.StatusOK}
 }
 
+func GetEvent(id string) (*Event, Tx) {
+	row := db.DB.QueryRow("SELECT * FROM events WHERE id=$1", id)
+
+	var e Event
+	err :=row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
+		&e.Lon, &e.CreatedAt, &e.UpdatedAt)
+
+	if err != nil {
+		return nil, Tx{err.Error(), false, http.StatusInternalServerError}
+	}
+	return &e, Tx{"", true, http.StatusOK}
+}
+
 func CreateEvent(event *Event) Tx {
 	// TODO: validation
 
