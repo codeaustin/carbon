@@ -5,7 +5,7 @@ services:
         ports:
             - "5432"
         environment:
-            - POSTGRES_USER=ang
+            - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=password
             - POSTGRES_DB=carbon_dev
         volumes:
@@ -14,9 +14,6 @@ services:
         build: .
         depends_on:
             - "postgres"
-        environment:
-            - GOPATH=/goworkspace
-        working_dir: /goworkspace/src/github.com/codeaustin/carbon
         command: go run app.go
         volumes:
             - ../..:/goworkspace/src/github.com
