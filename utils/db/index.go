@@ -6,8 +6,7 @@ import (
 	"log"
 
 	"github.com/codeaustin/carbon/utils/config"
-	// Dont actually used but required as driver
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // Driver for the database
 )
 
 //DB Globally export DB instance
@@ -21,8 +20,8 @@ type TableInfo struct {
 
 //Init connects to the database
 func Init() {
-	dbConnection := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
-		config.Config.DB_User, config.Config.DB_Password, config.Config.DB_Name)
+	dbConnection := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
+		config.Config.DBUser, config.Config.DBPassword, config.Config.DBName, config.Config.DBHost, config.Config.DBPort)
 
 	var err error
 

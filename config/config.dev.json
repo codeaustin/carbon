@@ -1,6 +1,8 @@
 {
-  "Port" : "3000",
-  "DB_User" : "cody",
-  "DB_Password" : "password",
-  "DB_Name" : "carbon_dev"
+  "port": "3000",
+  "dbUser": "cody",
+  "dbPassword": "password",
+  "dbName": "carbon_dev",
+  "dbHost": "localhost",
+  "dbPort": "5432"
 }
