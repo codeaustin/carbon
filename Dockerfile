@@ -1,6 +1,10 @@
-FROM golang:onbuild
+FROM golang:1.8
 
-RUN curl https://glide.sh/get | sh
-RUN make install
+WORKDIR /go/src/github.com/codeaustin/carbon
+COPY . .
 
+RUN go-wrapper download
+RUN go-wrapper install
+
+CMD ["go-wrapper", "run"]
 EXPOSE 3000
