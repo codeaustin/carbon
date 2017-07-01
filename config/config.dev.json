@@ -1,8 +1,8 @@
 {
   "port": "3000",
-  "dbUser": "cody",
+  "dbUser": "ang",
   "dbPassword": "password",
   "dbName": "carbon_dev",
-  "dbHost": "localhost",
+  "dbHost": "postgres",
   "dbPort": "5432"
 }
