@@ -8,7 +8,7 @@ down:
 	docker-compose down
 
 build:
-	docker-compose build 
+	docker-compose build go
 
 clean:
 	rm carbon
