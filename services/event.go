@@ -38,16 +38,10 @@ func getEvent(c echo.Context) error {
 
 func deleteEvent(c echo.Context) error {
 	id := c.Param("id")
-	event, tx := models.DeleteEvent(id)
-
-	if !tx.Ok {
-		return c.JSON(tx.Status, map[string]interface{}{
-			"mesage": tx.Message,
-		})
-	}
+	tx := models.DeleteEvent(id)
 
 	return c.JSON(tx.Status, map[string]interface{}{
-		"event": event,
+		"message": tx.Message,
 	})
 }
 
