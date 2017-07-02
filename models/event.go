@@ -18,10 +18,12 @@ type Event struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func GetEvents() ([]*Event, Tx) {
+func GetEvents(limit, offset uint64) ([]*Event, Tx) {
 	var events []*Event
 
-	rows, err := db.DB.Query("SELECT * FROM events")
+	rows, err := db.DB.Query("SELECT * FROM events ORDER BY created_at DESC LIMIT $1 OFFSET $2;",
+		limit, offset)
+
 	if err != nil {
 		return nil, Tx{err.Error(), false, http.StatusInternalServerError}
 	}
@@ -42,7 +44,7 @@ func GetEvents() ([]*Event, Tx) {
 }
 
 func GetEvent(id string) (*Event, Tx) {
-	row := db.DB.QueryRow("SELECT * FROM events WHERE id=$1", id)
+	row := db.DB.QueryRow("SELECT * FROM events WHERE id=$1;", id)
 
 	var e Event
 	err := row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
@@ -54,24 +56,24 @@ func GetEvent(id string) (*Event, Tx) {
 	return &e, Tx{"", true, http.StatusOK}
 }
 
-func DeleteEvent(id string) (Tx) {
-	row := db.DB.QueryRow("DELETE FROM events WHERE id=$1 RETURNING *", id)
+func DeleteEvent(id string) (*Event, Tx) {
+	row := db.DB.QueryRow("DELETE FROM events WHERE id=$1 RETURNING *;", id)
 
 	var e Event
 	err := row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
 		&e.Lon, &e.CreatedAt, &e.UpdatedAt)
 
 	if err != nil {
-		return Tx{err.Error(), false, http.StatusInternalServerError}
+		return nil, Tx{err.Error(), false, http.StatusInternalServerError}
 	}
-	return Tx{"Event successfully deleted", true, http.StatusOK}
+	return nil, Tx{"Event successfully deleted", true, http.StatusOK}
 }
 
 func CreateEvent(event *Event) Tx {
 	// TODO: validation
 
 	err := db.DB.QueryRow(`INSERT INTO events(title, start_time, end_time, lat, lon) VALUES
-		($1, $2, $3, $4, $5) RETURNING id, created_at, updated_at`, event.Title, event.StartTime,
+		($1, $2, $3, $4, $5) RETURNING id, created_at, updated_at;`, event.Title, event.StartTime,
 		event.EndTime, event.Lat, event.Lon).Scan(&event.ID, &event.CreatedAt, &event.UpdatedAt)
 
 	if err != nil {

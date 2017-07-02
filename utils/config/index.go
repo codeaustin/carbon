@@ -19,7 +19,7 @@ func Init() {
 	env := os.Getenv("ENV")
 
 	configDir, _ := os.Getwd()
-	configDir += "/config/"
+	configDir += "/config"
 
 	var configFile string
 	if env == "PROD" {

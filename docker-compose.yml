@@ -9,7 +9,7 @@ services:
             - POSTGRES_PASSWORD=password
             - POSTGRES_DB=carbon_dev
         volumes:
-            - ~/data:/data
+            - ~/data:/var/lib/postgresql/data
     go:
         build: .
         depends_on:

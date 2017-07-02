@@ -2,13 +2,27 @@ package services
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/codeaustin/carbon/models"
 	"github.com/labstack/echo"
 )
 
+//getEvents returns all events with a limit and offset
 func getEvents(c echo.Context) error {
-	events, tx := models.GetEvents()
+	limit, err := strconv.ParseUint(c.QueryParam("limit"), 10, 32)
+	if err != nil {
+		limit = 25
+	}
+
+	offset, err := strconv.ParseUint(c.QueryParam("offset"), 10, 32)
+	if err != nil {
+		offset = 0
+	}
+
+	offset *= limit
+
+	events, tx := models.GetEvents(limit, offset)
 
 	if !tx.Ok {
 		return c.JSON(tx.Status, map[string]interface{}{
@@ -18,6 +32,8 @@ func getEvents(c echo.Context) error {
 
 	return c.JSON(tx.Status, map[string]interface{}{
 		"events": events,
+		"limit":  limit,
+		"offset": offset,
 	})
 }
 
