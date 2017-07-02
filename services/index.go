@@ -12,6 +12,7 @@ func RegisterRoutes(api *echo.Group) {
 	api.GET("/health", healthCheck)
 	api.GET("/events", getEvents)
 	api.GET("/events/:id", getEvent)
+	api.DELETE("/events/:id", deleteEvent)
 	api.POST("/events", createEvent)
 }
 
