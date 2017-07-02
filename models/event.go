@@ -45,7 +45,20 @@ func GetEvent(id string) (*Event, Tx) {
 	row := db.DB.QueryRow("SELECT * FROM events WHERE id=$1", id)
 
 	var e Event
-	err :=row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
+	err := row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
+		&e.Lon, &e.CreatedAt, &e.UpdatedAt)
+
+	if err != nil {
+		return nil, Tx{err.Error(), false, http.StatusInternalServerError}
+	}
+	return &e, Tx{"", true, http.StatusOK}
+}
+
+func DeleteEvent(id string) (*Event, Tx) {
+	row := db.DB.QueryRow("DELETE FROM events WHERE id=$1 RETURNING *", id)
+
+	var e Event
+	err := row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
 		&e.Lon, &e.CreatedAt, &e.UpdatedAt)
 
 	if err != nil {
