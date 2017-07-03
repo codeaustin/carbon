@@ -15,7 +15,7 @@ var Config struct {
 	DBHost     string `json:"dbHost"`
 }
 
-func Init() {
+func init() {
 	env := os.Getenv("ENV")
 
 	configDir, _ := os.Getwd()
