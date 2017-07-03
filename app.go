@@ -10,9 +10,6 @@ import (
 )
 
 func main() {
-	// Init the config instance
-	config.Init()
-
 	// Ensure DB and tables created
 	tables := []db.TableInfo{models.CreateCategoryTable(), models.CreateEventTable()}
 

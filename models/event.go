@@ -19,7 +19,7 @@ type Event struct {
 }
 
 func GetEvents(limit, offset uint64) ([]*Event, Tx) {
-	var events []*Event
+	events := make([]*Event, 0)
 
 	rows, err := db.DB.Query("SELECT * FROM events ORDER BY created_at DESC LIMIT $1 OFFSET $2;",
 		limit, offset)
@@ -56,7 +56,7 @@ func GetEvent(id string) (*Event, Tx) {
 	return &e, Tx{"", true, http.StatusOK}
 }
 
-func DeleteEvent(id string) (*Event, Tx) {
+func DeleteEvent(id string) Tx {
 	row := db.DB.QueryRow("DELETE FROM events WHERE id=$1 RETURNING *;", id)
 
 	var e Event
@@ -64,9 +64,9 @@ func DeleteEvent(id string) (*Event, Tx) {
 		&e.Lon, &e.CreatedAt, &e.UpdatedAt)
 
 	if err != nil {
-		return nil, Tx{err.Error(), false, http.StatusInternalServerError}
+		return Tx{err.Error(), false, http.StatusInternalServerError}
 	}
-	return nil, Tx{"Event successfully deleted", true, http.StatusOK}
+	return Tx{"Event successfully deleted", true, http.StatusOK}
 }
 
 func CreateEvent(event *Event) Tx {
