@@ -83,6 +83,24 @@ func CreateEvent(event *Event) Tx {
 	return Tx{"Event successfully created", true, http.StatusCreated}
 }
 
+func UpdateEvent(id string, fieldsMap map[string]interface{}) Tx {
+	for key, value := range fieldsMap {
+
+		query := fmt.Sprintf("UPDATE events SET %s='%v' WHERE id=%s RETURNING *", key, value, id)
+		row := db.DB.QueryRow(query)
+
+		var e Event
+		err := row.Scan(&e.ID, &e.Title, &e.StartTime, &e.EndTime, &e.Lat,
+			&e.Lon, &e.CreatedAt, &e.UpdatedAt)
+
+		if err != nil {
+			return Tx{err.Error(), false, http.StatusInternalServerError}
+		}
+	}
+
+	return Tx{"Event successfully updated", true, http.StatusOK}
+}
+
 //CreateEventTable returns the table information to create table in DB
 func CreateEventTable() db.TableInfo {
 	eventTableInfo := db.TableInfo{

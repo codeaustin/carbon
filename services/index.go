@@ -14,6 +14,7 @@ func RegisterRoutes(api *echo.Group) {
 	api.GET("/events/:id", getEvent)
 	api.DELETE("/events/:id", deleteEvent)
 	api.POST("/events", createEvent)
+	api.PUT("/events/:id", updateEvent)
 }
 
 func apiIndex(c echo.Context) error {

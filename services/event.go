@@ -83,3 +83,27 @@ func createEvent(c echo.Context) error {
 		"event":   event,
 	})
 }
+
+func updateEvent(c echo.Context) error {
+		id := c.Param("id")
+
+		var fieldsMap map[string]interface{}
+		if err := c.Bind(&fieldsMap); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{
+				"message": err.Error(),
+			})
+		}
+
+		tx := models.UpdateEvent(id, fieldsMap)
+
+		if !tx.Ok {
+			return c.JSON(tx.Status, map[string]interface{}{
+				"message": tx.Message,
+			})
+		}
+
+		return c.JSON(tx.Status, map[string]interface{}{
+			"message": tx.Message,
+			"updated fields": fieldsMap,
+		})
+}
